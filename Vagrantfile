@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "laravel/homestead"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -22,13 +22,8 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  {
-    3306 => 13306,
-    11211 => 12211,
-    80 => 8080,
-  }.each do |guest_port, host_port|
-    config.vm.network "forwarded_port", guest: guest_port, host: host_port
-  end
+  config.vm.network "forwarded_port", guest: 3306, host: 33060
+  config.vm.network "forwarded_port", guest: 6379, host: 63790
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -70,32 +65,8 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    sudo apt-get update
-    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
-    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
-    sudo apt-get install -y vim curl python-software-properties
-    sudo apt-get update
-    sudo apt-get -y install mysql-server mysql-client
-    sed -i "s/^bind-address/#bind-address/" /etc/mysql/my.cnf
-    mysql -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-    sudo /etc/init.d/mysql restart
-
-    add-apt-repository ppa:ondrej/php
-
-    sudo apt-get install \
-        php7.0-fpm \
-        php7.0-cli \
-        php7.0-curl \
-        php7.0-gd \
-        php7.0-intl \
-        php7.0-mysql \
-        php-memcached
-
-
-    sudo apt-get install -y memcached nginx
-
-    sudo service nginx reload
-    sudo service php7.0-fpm restart
-  SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   sudo apt-get update
+  #   sudo apt-get install -y apache2
+  # SHELL
 end

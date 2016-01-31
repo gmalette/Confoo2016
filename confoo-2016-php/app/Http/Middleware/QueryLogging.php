@@ -30,7 +30,7 @@ class QueryLoggingProvider extends ServiceProvider
             $query = str_replace(array('%', '?'), array('%%', '%s'), $sql->sql);
 
             $query = vsprintf($query, $sql->bindings);
-            Log::info("[SQL] " . $query);
+            Log::info("[SQL] " . $query . sprintf(" (%s ms)", $sql->time));
         });
     }
 

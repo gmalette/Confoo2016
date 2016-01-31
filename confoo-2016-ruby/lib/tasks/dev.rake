@@ -6,10 +6,13 @@ namespace :dev do
     comments_count = ENV.fetch("COMMENTS", 10).to_i
 
     users_count.times do
-      User.create!(
-        name: Faker::Name.name,
-        email: Faker::Internet.email,
-      )
+      begin
+        User.create(
+          name: Faker::Name.name,
+          email: Faker::Internet.email,
+        )
+      rescue
+      end
     end
 
     users = User.all.to_a
