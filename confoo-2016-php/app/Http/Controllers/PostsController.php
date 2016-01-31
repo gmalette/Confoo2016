@@ -12,6 +12,6 @@ class PostsController extends Controller
 {
     public function getIndex() {
         \DB::enableQueryLog();
-        return view('posts.index', ['posts' => Post::limit(30)->get()]);
+        return view('posts.index', ['posts' => Post::limit(30)->offset(100)->get()]);
     }
 }

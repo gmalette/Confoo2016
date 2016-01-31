@@ -2,5 +2,5 @@
 
 @foreach ($posts as $post)
   <p>{{ $post->title }}</p>
-    There are {{ $post->comments->count() }} comments
+    <p>{{ $post->user->email}}</p>
 @endforeach
