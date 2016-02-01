@@ -1,9 +1,9 @@
 namespace :dev do
   desc "Create fake data"
   task seed_fake_data: :environment do
-    users_count = ENV.fetch("USERS", 10).to_i
-    posts_count = ENV.fetch("POSTS", 10).to_i
-    comments_count = ENV.fetch("COMMENTS", 10).to_i
+    users_count = ENV.fetch("USERS", 10).to_i - User.count
+    posts_count = ENV.fetch("POSTS", 10).to_i - Post.count
+    comments_count = ENV.fetch("COMMENTS", 10).to_i - Comment.count
 
     users_count.times do
       begin
@@ -13,7 +13,7 @@ namespace :dev do
         )
       rescue
       end
-    end
+    end if users_count > 0
 
     users = User.all.to_a
 
@@ -25,7 +25,7 @@ namespace :dev do
         title: title,
         body: Faker::Lorem.paragraphs(6),
       )
-    end
+    end if posts_count > 0
 
     posts = Post.all.to_a
 
@@ -35,6 +35,6 @@ namespace :dev do
         post: posts.sample,
         body: Faker::Lorem.sentence,
       )
-    end
+    end if comments_count > 0
   end
 end
