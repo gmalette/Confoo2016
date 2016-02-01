@@ -54,7 +54,7 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', '127.0.0.1:33060'),
+            'host'      => env('DB_HOST', '127.0.0.1:3306'),
             'database'  => env('DB_DATABASE', 'confoo_2016_development'),
             'username'  => env('DB_USERNAME', 'homestead'),
             'password'  => env('DB_PASSWORD', 'secret'),
