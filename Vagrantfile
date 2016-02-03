@@ -84,6 +84,6 @@ Vagrant.configure(2) do |config|
     # Toxiproxy
     wget -O toxiproxy-1.2.1.deb https://github.com/Shopify/toxiproxy/releases/download/v1.2.1/toxiproxy_1.2.1_amd64.deb
     sudo dpkg -i toxiproxy-1.2.1.deb
-    sudo service toxiproxy start
+    sudo service toxiproxy restart
   SHELL
 end
