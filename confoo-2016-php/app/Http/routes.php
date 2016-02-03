@@ -10,6 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::macro('after', function ($callback) {
+    $this->events->listen('router.filter:after:newrelic-patch', $callback);
+});
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'PostsController@getIndex');
