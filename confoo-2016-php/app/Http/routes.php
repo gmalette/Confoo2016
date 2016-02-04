@@ -16,5 +16,6 @@ Route::macro('after', function ($callback) {
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'PostsController@getIndex');
+    Route::get('/tags/{tag}', 'PostsController@getFromTags');
 });
 

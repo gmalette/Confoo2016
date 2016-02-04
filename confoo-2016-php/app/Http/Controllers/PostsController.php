@@ -11,7 +11,14 @@ use App\Http\Controllers\Controller;
 class PostsController extends Controller
 {
     public function getIndex() {
-        \DB::enableQueryLog();
-        return view('posts.index', ['posts' => Post::limit(30)->offset(100)->get()]);
+        $posts = Post::with(['tags', 'user'])->limit(30)->get();
+        return view('posts.index', ['posts' => $posts]);
+    }
+
+    public function getFromTags($tag) {
+        $posts = Post::with(['tags', 'user'])->whereHas('tags', function($query) use ($tag) {
+            $query->where('name', $tag);
+        })->get();
+        return view('posts.index', ['posts' => $posts]);
     }
 }

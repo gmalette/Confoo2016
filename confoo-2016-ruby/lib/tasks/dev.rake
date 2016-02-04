@@ -19,12 +19,18 @@ namespace :dev do
 
     posts_count.times do
       title = Faker::Lorem.sentence
-      Post.create!(
+      post = Post.create!(
         user: users.sample,
         slug: title.dasherize,
         title: title,
         body: Faker::Lorem.paragraphs(6),
       )
+      5.times do
+        Tag.create!(
+          post: post,
+          name: Faker::Lorem.word,
+        )
+      end
     end if posts_count > 0
 
     posts = Post.all.to_a

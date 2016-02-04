@@ -17,7 +17,7 @@ class RequestLoggingMiddleware
     {
         \Log::info(
             sprintf(
-                "[Request] Started to %s routed to %s",
+                "\n\n[Request] Started to %s routed to %s",
                 $request->path(),
                 $request->route()->getAction()['controller']
             )
