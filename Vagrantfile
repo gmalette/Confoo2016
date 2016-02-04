@@ -70,6 +70,10 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision :shell, inline: <<-SHELL
+    mysql -uhomestead -psecret --host 127.0.0.1 < /vagrant/.provision/mysql_setup.sql
+  SHELL
+
+  config.vm.provision :shell, inline: <<-SHELL
     # Newrelic
     echo 'deb http://apt.newrelic.com/debian/ newrelic non-free' | sudo tee /etc/apt/sources.list.d/newrelic.list
     wget -O- https://download.newrelic.com/548C16BF.gpg | sudo apt-key add -
