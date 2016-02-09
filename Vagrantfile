@@ -77,17 +77,42 @@ Vagrant.configure(2) do |config|
     # Newrelic
     echo 'deb http://apt.newrelic.com/debian/ newrelic non-free' | sudo tee /etc/apt/sources.list.d/newrelic.list
     wget -O- https://download.newrelic.com/548C16BF.gpg | sudo apt-key add -
+    wget -O- http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+
+    if ! grep -qe "http://nginx.org/packages/ubuntu/" "/etc/apt/sources.list"; then
+        echo "# Nginx packages" >> /etc/apt/sources.list
+        echo "deb http://nginx.org/packages/ubuntu/ trusty nginx\ndeb-src http://nginx.org/packages/ubuntu/ trusty nginx" >> /etc/apt/sources.list
+    fi
+
     echo newrelic-php5 newrelic-php5/application-name string "Confoo PHP" | debconf-set-selections
     echo newrelic-php5 newrelic-php5/license-key string "324bec1441076c34c37333a0568f85039514de65"
     sudo apt-get update
     sudo apt-get install -y newrelic-php5
     sudo newrelic-install install
-    sudo service nginx restart
-    sudo service php5-fpm restart
+    sudo rm /etc/php5/fpm/conf.d/newrelic.ini
+
+    sudo apt-get install -y nginx-nr-agent
+    sudo sed -i "s/YOUR_LICENSE_KEY_HERE/324bec1441076c34c37333a0568f85039514de65/" /etc/nginx-nr-agent/nginx-nr-agent.ini
+    if ! grep -qe "confoo-php.io" "/etc/nginx-nr-agent/nginx-nr-agent.ini"; then
+        echo "[source1]\nname=Confoo PHP\nurl=http://localhost/status" >> /etc/nginx-nr-agent/nginx-nr-agent.ini
+        echo "# Nginx packages" >> /etc/apt/sources.list
+    fi
+    if ! grep -qe "http://nginx.org/packages/ubuntu/" "/etc/apt/sources.list"; then
+        echo "deb http://nginx.org/packages/ubuntu/ trusty nginx\ndeb-src http://nginx.org/packages/ubuntu/ trusty nginx" >> /etc/apt/sources.list
+    fi
+
+    # if ! grep -qe "confoo-php.io" "/etc/hosts"; then
+    #     echo "127.0.0.1 confoo-php.io" >> /etc/hosts
+    # fi
 
     # Toxiproxy
-    wget -O toxiproxy-1.2.1.deb https://github.com/Shopify/toxiproxy/releases/download/v1.2.1/toxiproxy_1.2.1_amd64.deb
+    wget -O toxiproxy-1.2.1.deb https://github.com/Shopify/toxiproxy/releases/download/v1.2.1/toxiproxy_1.2.1_amd64.deb 2> /dev/null
     sudo dpkg -i toxiproxy-1.2.1.deb
+
+
     sudo service toxiproxy restart
+    sudo service nginx restart
+    sudo service php5-fpm restart
+    sudo service nginx-nr-agent restart
   SHELL
 end
