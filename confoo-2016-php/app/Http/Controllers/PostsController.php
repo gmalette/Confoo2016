@@ -11,7 +11,8 @@ use App\Http\Controllers\Controller;
 class PostsController extends Controller
 {
     public function getIndex() {
-        $posts = Post::with(['tags', 'user'])->limit(30)->get();
+        file_get_contents("http://confoo-php.io/metrics");
+        $posts = Post::limit(10)->get();
         return view('posts.index', ['posts' => $posts]);
     }
 

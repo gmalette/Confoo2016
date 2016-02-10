@@ -11,7 +11,7 @@ server {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-    location /slow.txt {
+    location /metrics.txt {
         limit_rate 100;
     }
 
