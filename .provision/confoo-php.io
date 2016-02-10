@@ -12,7 +12,7 @@ server {
     }
 
     location /metrics.txt {
-        limit_rate 100;
+        limit_rate 1000;
     }
 
     location = /favicon.ico { access_log off; log_not_found off; }
