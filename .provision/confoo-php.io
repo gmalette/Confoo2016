@@ -11,6 +11,10 @@ server {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+    location /slow.txt {
+        limit_rate 100;
+    }
+
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 

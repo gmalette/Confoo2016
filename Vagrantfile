@@ -98,5 +98,9 @@ Vagrant.configure(2) do |config|
     sudo service php5-fpm restart
     sudo /etc/init.d/newrelic-sysmond start
     sudo /etc/init.d/nginx reload
+
+    if ! grep -qe "confoo-php.io" "/etc/hosts"; then
+        sudo echo "127.0.0.1 confoo-php.io" >> /etc/hosts
+    fi
   SHELL
 end
