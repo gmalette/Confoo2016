@@ -14,12 +14,12 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 
-    access_log off;
+    access_log /var/log/nginx/access.log;
     error_log  /var/log/nginx/confoo-2016-php-error.log error;
 
     sendfile off;
 
-    client_max_body_size 100m;
+    client_max_body_size 20m;
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -30,6 +30,8 @@ server {
         fastcgi_intercept_errors off;
         fastcgi_buffer_size 16k;
         fastcgi_buffers 4 16k;
+
+        fastcgi_param HTTP_X_REQUEST_START "t=${msec}";
     }
 
     location ~ /\.ht {
