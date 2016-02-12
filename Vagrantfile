@@ -63,14 +63,14 @@ Vagrant.configure(2) do |config|
   # end
   config.vm.provision :shell do |s|
     s.inline = <<-SHELL
-      sudo cp /vagrant/.provision/confoo-php.io /etc/nginx/sites-available/confoo-php.io
+      sudo cp /vagrant/provision/confoo-php.io /etc/nginx/sites-available/confoo-php.io
       sudo ln -fs "/etc/nginx/sites-available/confoo-php.io" "/etc/nginx/sites-enabled/confoo-php.io"
-      sudo cp --force /vagrant/.provision/cache.cnf /etc/mysql/conf.d/cache.cnf
+      sudo cp --force /vagrant/provision/cache.cnf /etc/mysql/conf.d/cache.cnf
     SHELL
   end
 
   config.vm.provision :shell, inline: <<-SHELL
-    mysql -uhomestead -psecret --host 127.0.0.1 < /vagrant/.provision/mysql_setup.sql
+    mysql -uhomestead -psecret --host 127.0.0.1 < /vagrant/provision/mysql_setup.sql
   SHELL
 
   config.vm.provision :shell, inline: <<-SHELL
