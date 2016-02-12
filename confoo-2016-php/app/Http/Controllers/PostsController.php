@@ -12,7 +12,7 @@ class PostsController extends Controller
 {
     public function getIndex() {
         $this->dispatch(new \App\Jobs\SendMetricsJob());
-        $posts = Post::limit(10)->get();
+        $posts = Post::with(['user', 'tags'])->limit(10)->get();
         return view('posts.index', ['posts' => $posts]);
     }
 }
