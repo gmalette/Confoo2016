@@ -1,8 +1,12 @@
-<h1>Posts</h1>
+@extends('layouts.main')
 
-@foreach ($posts as $post)
-    <p>{{ $post->title }}</p>
-    <p>{{ $post->user->email}}</p>
-    <p>{{ $post->tags->implode('name', ', ') }}</p>
-    <hr>
-@endforeach
+@section('content')
+    <h1>Posts</h1>
+
+    @foreach ($posts as $post)
+        <p>{{ $post->title }}</p>
+        <p>{{ $post->user->email}}</p>
+        <p>{{ $post->tags->implode('name', ', ') }}</p>
+        <hr>
+    @endforeach
+@endsection

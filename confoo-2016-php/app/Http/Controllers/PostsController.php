@@ -15,11 +15,4 @@ class PostsController extends Controller
         $posts = Post::limit(10)->get();
         return view('posts.index', ['posts' => $posts]);
     }
-
-    public function getFromTags($tag) {
-        $posts = Post::with(['tags', 'user'])->whereHas('tags', function($query) use ($tag) {
-            $query->where('name', $tag);
-        })->get();
-        return view('posts.index', ['posts' => $posts]);
-    }
 }
